@@ -1,0 +1,532 @@
+/* Remove browser defaults */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Page */
+
+body {
+    background: #000000;
+    min-height: 100vh;
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+}
+
+/* Layout */
+
+.container {
+    width: fit-content;
+    max-width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Image stage */
+
+.image-stage {
+    position: relative;
+    display: block;
+    width: max-content;
+    max-width: 80vw;
+    max-height: 75vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Background painting */
+
+.main-image {
+    display: block;
+    max-width: 80vw;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+}
+
+/* Layer container */
+
+#layer-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Individual environment layers */
+
+.environment-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: auto;
+    transform-origin: top left;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Menu */
+
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.menu a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+
+/* Sound control */
+
+#sound-toggle {
+    display: block;
+    margin: 1.5rem auto 0 auto;
+    padding: 0.4rem 0.8rem;
+
+    background: transparent;
+    border: 1px solid #666666;
+
+    color: #ffffff;
+    font-family: Georgia, serif;
+    font-size: 0.85rem;
+
+    cursor: pointer;
+}
+
+#sound-toggle:hover {
+    border-color: #ffffff;
+}
+
+/* Gardener's Atlas: Interactive layer breathing effect */
+
+.environment-layer[data-layer="e0001-l0001"] {
+    animation: gentle-breathing 7s ease-in-out infinite;
+}
+
+@keyframes gentle-breathing {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Respect visitor motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    .environment-layer {
+        animation: none;
+    }
+}
+
+/* Gardener's Atlas: Lower interface */
+
+
+.atlas-about {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.atlas-logo {
+    display: block;
+    width: 150px;
+    height: auto;
+    margin: 0 auto 1rem auto;
+}
+
+#about-toggle {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#about-toggle:hover {
+    text-decoration: underline;
+}
+
+#about-text {
+    max-width: 300px;
+    margin-top: 0.8rem;
+    color: #cccccc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.alert-phone {
+    position: relative;
+    width: 280px;
+    margin: 2rem auto 0 auto;
+}
+
+.phone-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Phone screen */
+
+.phone-screen {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 35%;
+    overflow: hidden;
+
+}
+
+/* Scrolling message */
+
+.alert-track {
+    display: block;
+    width: 100%;
+    white-space: normal;
+    animation: subtle-flicker 8s steps(1, end) infinite;
+    margin-top: -4px;
+    line-height: 1.0;
+}
+
+.alert-track span {
+    display: inline-block;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    font-family: monospace;
+    font-size: 12px;
+    color: #000000;
+    line-height: 1.4;
+    padding-top: 0;
+}
+
+/* Movement of the message */
+
+
+@keyframes subtle-flicker {
+    0%, 72%, 74%, 76%, 100% {
+        opacity: 1;
+    }
+
+    73% {
+        opacity: 0.4;
+    }
+
+    75% {
+        opacity: 0.75;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alert-track {
+        animation: none;
+    }
+}
+
+
+/* Gardener's Atlas — wooden menu strip */
+
+.wooden-menu {
+    background-image: url("");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 100%;
+box-sizing: border-box;
+    min-height: 110px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 20px;
+    gap: 20px;
+
+    color: #FFFFFF;
+    font-family: monospace;
+}
+
+/* Menu title */
+
+.menu-title {
+    font-size: 0.9rem;
+}
+
+/* Menu buttons */
+
+.wooden-menu button {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-family: monospace !important;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* Keep the sound button in line with the other menu items */
+
+.wooden-menu #sound-toggle,
+.wooden-menu #about-toggle {
+    margin: 0;
+    color: #FFFFFF;
+}
+
+/* Disclaimer beneath the menu */
+
+#about-text {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 400px;
+    padding: 12px;
+    box-sizing: border-box;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: #000000;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 10;
+}
+
+/* Gardener's Atlas — phone screen */
+
+.phone-layer {
+    position: absolute;
+    container-type: inline-size;
+}
+
+.phone-layer-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Green screen area */
+
+.phone-screen-overlay {
+    position: absolute;
+    left: 15.75%;
+    top: 12.3%;
+    width: 68.9%;
+    height: 30.5%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 2% 3%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    color: #172018;
+    font-family: monospace;
+    line-height: 1.2;
+    animation: phone-flicker 6s ease-in-out infinite;
+}
+
+/* Date and weather on the same line */
+
+.phone-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Date */
+.phone-date {
+    font-size: 4cqw;
+}
+
+/* Temperature */
+.phone-temperature {
+    font-size: 6cqw;
+    font-weight: bold;
+    margin: 2% 0;
+}
+
+/* Weather conditions */
+.phone-conditions {
+    font-size: 2.8cqw;
+    white-space: nowrap;
+    text-align: right;
+}
+
+/* Gardener's Atlas — subtle phone screen flicker */
+
+@keyframes phone-flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: 0.88;
+    }
+
+    21% {
+        opacity: 0.72;
+    }
+
+    23% {
+        opacity: 0.92;
+    }
+
+    48% {
+        opacity: 0.82;
+    }
+
+    50% {
+        opacity: 0.68;
+    }
+
+    53% {
+        opacity: 0.95;
+    }
+
+    78% {
+        opacity: 0.85;
+    }
+
+    80% {
+        opacity: 0.75;
+    }
+
+    82% {
+        opacity: 1;
+    }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    .phone-screen-overlay {
+        animation: none;
+    }
+}
+
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    .environment-layer[data-layer="e0002-l0002"] {
+        animation: none;
+    }
+}
+
+
+
+/* Mower fades in and out between appearances */
+
+.mower-intermittent {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Gardener's Atlas — home icon */
+
+.home-icon {
+    display: block;
+    width: 22px;
+    height: 22px;
+    margin: 0 auto 12px auto;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.home-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Top navigation icons */
+
+.top-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin: 0 auto 12px auto;
+}
+
+.home-icon,
+#sound-toggle,
+#about-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    color: #ffffff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.home-icon svg,
+.sound-icon,
+#about-toggle svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sound-waves {
+    display: none;
+}
+
+#sound-toggle[aria-pressed="true"] .sound-waves {
+    display: block;
+}
+
+#sound-toggle[aria-pressed="true"] .sound-cross {
+    display: none;
+}
+
+/* Phone positioned within the wooden menu */
+
+#phone-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+#phone-container .phone-layer {
+    position: relative;
+    width: 265px;
+    height: auto;
+    flex-shrink: 0;
+}
