@@ -81,9 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSoundButton();
     }
 
+   // Track whether an environment has already been displayed
+
+let hasDisplayedInitialEnvironment = false;
+   
     // Identify and display an environment
 
-    function showEnvironment(environmentID) {
+    function showEnvironment(environmentID, transitionComplete = false) {
 
     const currentEnvironment = environments[environmentID];
 
@@ -93,14 +97,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
     environment.dataset.environment = environmentID;
 
-    image.src = currentEnvironment.image;
-    image.alt = currentEnvironment.name;
+// Determine whether this is the first environment or a transition
+
+const shouldTransition = hasDisplayedInitialEnvironment;
+hasDisplayedInitialEnvironment = true;
+
+image.alt = currentEnvironment.name;
+
+console.log(
+    currentEnvironment.name,
+    'natural:', image.naturalWidth, image.naturalHeight,
+    'displayed:', image.getBoundingClientRect().width, image.getBoundingClientRect().height
+);
+
+if (shouldTransition && !transitionComplete) {
+
+    // Create a temporary image for the environment transition
+
+    const transitionImage = document.createElement('img');
+
+    transitionImage.classList.add('environment-transition-image');
+    transitionImage.alt = '';
+    transitionImage.setAttribute('aria-hidden', 'true');
+
+    transitionImage.onload = () => {
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+
+                transitionImage.classList.add('is-visible');
+
+                // Wait for the fade to finish
+
+                setTimeout(() => {
+
+                    // Load the new painting into the permanent image
+
+                    image.onload = () => {
+
+    transitionImage.remove();
+    image.onload = null;
+
+    // Now update the rest of the environment
+
+    showEnvironment(environmentID, true);
+};
+
+                    image.src = currentEnvironment.image;
+
+                }, 1500);
+
+            });
+        });
+
+    };
+
+    transitionImage.onerror = () => {
+        transitionImage.remove();
+        image.src = currentEnvironment.image;
+        showEnvironment(environmentID, true);
+    };
+
+    transitionImage.src = currentEnvironment.image;
+
+    image.parentElement.appendChild(transitionImage);
+
+    // Stop here until the transition has finished
+
+    return;
+
+} else {
+
+    // First visit or completed transition
+
+    if (image.getAttribute('src') !== currentEnvironment.image) {
+        image.src = currentEnvironment.image;
+    }
+
+}
 
     document.title = currentEnvironment.name + " — Gardener's Atlas";
 
     // Display the environment's layers
 
-    layerContainer.innerHTML = '';
+    while (layerContainer.firstChild) {
+    layerContainer.removeChild(layerContainer.firstChild);
+}
+
+// Add animated rain to the 2023 environment
+if (environmentID === 'e0003') {
+    const rain = document.createElement('img');
+    rain.src = 'images/rain.svg';
+    rain.classList.add('rain-overlay');
+    rain.alt = '';
+    rain.setAttribute('aria-hidden', 'true');
+    layerContainer.appendChild(rain);
+}
+
+
+
     document.getElementById('phone-container').innerHTML = '';
 
     if (currentEnvironment.layers) {
@@ -153,21 +248,48 @@ screen.appendChild(temperature);
 
         layerElement.appendChild(screen);
 
-    } else {
+    } else if (layer.id === 'e0001-l0003') {
 
-        // Create an ordinary image layer
+    // Create the 2023 window with its year label
 
-        layerElement = document.createElement('img');
-        layerElement.src = layer.image;
-        layerElement.alt = '';
+    layerElement = document.createElement('div');
+    layerElement.classList.add('environment-layer', 'past-window');
 
-        layerElement.classList.add('environment-layer');
+    const windowImage = document.createElement('img');
+    windowImage.src = layer.image;
+    windowImage.alt = '';
+    windowImage.style.display = 'block';
+    windowImage.style.width = '100%';
+    windowImage.style.height = 'auto';
 
-    }
+    layerElement.appendChild(windowImage);
+
+    const yearLabel = document.createElement('div');
+    yearLabel.classList.add('past-window-year');
+    yearLabel.textContent = '2023';
+
+    layerElement.appendChild(yearLabel);
+
+} else {
+
+    // Create an ordinary image layer
+
+    layerElement = document.createElement('img');
+    layerElement.src = layer.image;
+    layerElement.alt = '';
+
+    layerElement.classList.add('environment-layer');
+
+}
 
     layerElement.dataset.layer = layer.id;
 
-    // Prepare the lawnmower for its intermittent appearances
+    if (layer.id === 'e0001-l0003') {
+    layerElement.classList.add('past-window');
+}
+
+
+
 
 // Prepare the lawnmower for its intermittent appearances
 
@@ -187,10 +309,10 @@ if (layer.type !== 'phone') {
 }
 
     if (layer.target) {
-        layerElement.addEventListener('click', () => {
-            window.location.hash = layer.target;
-        });
-    }
+    layerElement.addEventListener('click', () => {
+        window.location.hash = layer.target;
+    });
+}
 
     if (layer.type === 'phone') {
     document.getElementById('phone-container').appendChild(layerElement);
